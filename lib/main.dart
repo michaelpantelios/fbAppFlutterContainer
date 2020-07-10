@@ -33,7 +33,6 @@ class NewHomePage extends StatelessWidget {
     Widget build(BuildContext context) {
 
       _iframeElement.src = "https://localhost:8080//?sessionKey=da188e8814445f520525191328dc791087b885e9e60c66661d0873b81f979461";
-      _iframeElement.
 
 
       // ignore: undefined_prefixed_name
