@@ -1,8 +1,11 @@
 // ignore: avoid_web_libraries_in_flutter
+import 'dart:convert';
 import 'dart:html';
+import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fbAppFlutterContainer/gameInfo.dart';
 
 main() {
   runApp(MyApp());
@@ -18,19 +21,39 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: NewHomePage(),
+      home: HomePage(),
     );
   }
 }
 
-class NewHomePage extends StatelessWidget {
-  GameOrientation gameOrientation = GameOrientation.portrait;
-  final IFrameElement _iframeElement = IFrameElement();
-  Widget _iframeWidget;
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
+
+  final List<Widget> _gamePromos = [];
 
   @override
-  Widget build(BuildContext context) {
-    _iframeElement.src = "https://localhost:8080//?sessionKey=0c9fd75c3f407ee5259ec8f98b13e64383a21df8e47d5844dbfbe4e1b02ede52";
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  ScrollController _controller;
+  int scrollCardDimension;
+  String _gameOrientation;
+  final IFrameElement _iframeElement = IFrameElement();
+  Widget _iframeWidget;
+  Future<GameInfo> _gameInfo;
+  final gamePromoWidth = 160.0;
+  final gamePromoHeight = 65.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _gameInfo = fetchGameInfo();
+
+//    _iframeElement.src = "https://localhost:8080//?sessionKey=0c9fd75c3f407ee5259ec8f98b13e64383a21df8e47d5844dbfbe4e1b02ede52";
+
+   // _iframeElement.src = "http://localhost:33243/static/test.html";
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
@@ -39,179 +62,33 @@ class NewHomePage extends StatelessWidget {
     );
 
     _iframeWidget = HtmlElementView(key: UniqueKey(), viewType: 'iframeElement');
-
-    Widget getResizedBackground() {
-      final double screenWidth = MediaQuery.of(context).size.width;
-      final double screenHeight = MediaQuery.of(context).size.height;
-      double screenRatio = screenWidth / screenHeight;
-      //    print("screenRatio ="+screenRatio.toString());
-
-      double bgRatio = 1.83333333333;
-
-      double bgHeight;
-      double bgWidth;
-
-      if (screenRatio >= bgRatio) {
-        bgWidth = screenWidth;
-        bgHeight = bgWidth / bgRatio;
-      } else if (screenRatio < bgRatio && screenRatio >= 1) {
-        bgHeight = screenHeight;
-        bgWidth = bgHeight * bgRatio;
-      } else if (screenRatio < 1) {
-        bgHeight = screenHeight;
-        bgWidth = bgHeight * bgRatio;
-      }
-      return Container(
-          width: bgWidth,
-          height: bgHeight,
-          child: FittedBox(
-            alignment: Alignment.center,
-            fit: BoxFit.cover,
-            child: Image.asset("images/bg.png"),
-          ));
-    }
-
-    Size calculateIframeSize() {
-      final double screenWidth = MediaQuery.of(context).size.width;
-      final double screenHeight = MediaQuery.of(context).size.height;
-
-      //considering game is 1920x1080
-      double portraitGameRatio = 1080 / 1920;
-      double landscapeGameRatio = 1.777;
-
-      double iframeHeight;
-      double iframeWidth;
-
-      if (gameOrientation == GameOrientation.portrait) {
-        iframeHeight = screenHeight - 150;
-        iframeWidth = iframeHeight * portraitGameRatio;
-      } else {
-        iframeHeight = screenHeight - 150;
-        iframeWidth = iframeHeight * landscapeGameRatio;
-      }
-
-      return new Size(iframeWidth, iframeHeight);
-    }
-
-    getIframeContainer() {
-      return Center(
-        child: Container(
-            decoration: new BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.red,
-              boxShadow: [
-                new BoxShadow(color: Color(0xaa000000), offset: new Offset(0.0, 0.0), blurRadius: 5, spreadRadius: 2),
-              ],
-            ),
-            height: calculateIframeSize().height,
-            width: calculateIframeSize().width,
-            child: _iframeWidget),
-      );
-    }
-
-    Widget getBottomLinksContainer() {
-      final double screenWidth = MediaQuery.of(context).size.width;
-      final double screenHeight = MediaQuery.of(context).size.height;
-
-      return ConstrainedBox(
-          constraints: BoxConstraints(minHeight: 30, maxHeight: 50, minWidth: 400, maxWidth: 800),
-          child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-//        width: screenWidth * 0.4,
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10), child: Image.asset("images/ll_logo.png")),
-                  Container(
-                      width: 190,
-                      height: 25,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                      child: FlatButton(
-                          color: Color(0x55000000),
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          shape: RoundedRectangleBorder(
-//                    side: BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10.0)),
-                            onPressed: () {
-                              print("Terms & Conditions");
-                            },
-
-                          child: Text(
-                            "Terms & Conditions",
-                            style: TextStyle(color: Color(0xffffffff), fontSize: 15.0),
-                            textAlign: TextAlign.center,
-                          ))),
-                  Container(
-                      width: 150,
-                      height: 25,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                      child: FlatButton(
-                          color: Color(0x55000000),
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          shape: RoundedRectangleBorder(
-//                    side: BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10.0)),
-                            onPressed: () {
-                              print("Privacy Policy");
-                            },
-                          child: Text(
-                            "Privacy Policy",
-                            style: TextStyle(color: Color(0xffffffff), fontSize: 15),
-                            textAlign: TextAlign.center,
-                          )))
-                ],
-              )));
-    }
-
-    return Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            getResizedBackground(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [GamePromos(), getIframeContainer(), getBottomLinksContainer()],
-            )
-          ],
-        ));
   }
-}
 
-enum GameOrientation { portrait, landscape }
+  Future<GameInfo> fetchGameInfo() async {
+    final response = await http.get("http://localhost:33243/static/gameInfo.json");
 
-class GamePromos extends StatefulWidget {
-  GamePromos({Key key}) : super(key: key);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return GameInfo.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load gameInfo');
+    }
+  }
 
-  final List<Widget> _gamePromos = [
-    new Image.asset('images/gamePromo1.png'),
-    new Image.asset('images/gamePromo2.png'),
-    new Image.asset('images/gamePromo3.png'),
-    new Image.asset('images/gamePromo4.png'),
-    new Image.asset('images/gamePromo5.png'),
-    new Image.asset('images/gamePromo1.png'),
-    new Image.asset('images/gamePromo2.png'),
-    new Image.asset('images/gamePromo3.png'),
-    new Image.asset('images/gamePromo4.png'),
-    new Image.asset('images/gamePromo5.png')
-  ];
-
-  @override
-  _GamePromosState createState() => _GamePromosState();
-}
-
-class _GamePromosState extends State<GamePromos> {
-  ScrollController _controller;
-  int scrollCardDimension;
-  final gamePromoWidth = 160.0;
-  final gamePromoHeight = 65.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget getGamePromoItem(BuildContext context, int index) {
@@ -240,9 +117,142 @@ class _GamePromosState extends State<GamePromos> {
     _controller.animateTo(_controller.offset + gamePromoWidth, curve: Curves.linear, duration: Duration(milliseconds: 250));
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget getResizedBackground(String bgUrl) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    double screenRatio = screenWidth / screenHeight;
+    //    print("screenRatio ="+screenRatio.toString());
+
+    double bgRatio = 1.83333333333;
+
+    double bgHeight;
+    double bgWidth;
+
+    if (screenRatio >= bgRatio) {
+      bgWidth = screenWidth;
+      bgHeight = bgWidth / bgRatio;
+    } else if (screenRatio < bgRatio && screenRatio >= 1) {
+      bgHeight = screenHeight;
+      bgWidth = bgHeight * bgRatio;
+    } else if (screenRatio < 1) {
+      bgHeight = screenHeight;
+      bgWidth = bgHeight * bgRatio;
+    }
+    return Container(
+        width: bgWidth,
+        height: bgHeight,
+        child: FittedBox(
+          alignment: Alignment.center,
+          fit: BoxFit.cover,
+          child: Image.network(bgUrl),
+        ));
+  }
+
+  Size calculateIframeSize() {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
+    //considering game is 1920x1080
+    double portraitGameRatio = 1080 / 1920;
+    double landscapeGameRatio = 1.777;
+
+    double iframeHeight;
+    double iframeWidth;
+
+    if (_gameOrientation == "portrait") {
+      iframeHeight = screenHeight - 150;
+      iframeWidth = iframeHeight * portraitGameRatio;
+    } else {
+      iframeHeight = screenHeight - 150;
+      iframeWidth = iframeHeight * landscapeGameRatio;
+    }
+
+    return new Size(iframeWidth, iframeHeight);
+  }
+
+  getIframeContainer(String iframeSrc, String gameOrientation) {
+    _gameOrientation = gameOrientation;
+    _iframeElement.src = iframeSrc;
+    return Center(
+      child: Container(
+          decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.red,
+            boxShadow: [
+              new BoxShadow(color: Color(0xaa000000), offset: new Offset(0.0, 0.0), blurRadius: 5, spreadRadius: 2),
+            ],
+          ),
+          height: calculateIframeSize().height,
+          width: calculateIframeSize().width,
+          child: _iframeWidget),
+    );
+  }
+
+  Widget getBottomLinksContainer() {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
+    return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 30, maxHeight: 50, minWidth: 400, maxWidth: 800),
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+//        width: screenWidth * 0.4,
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10), child: Image.asset("images/ll_logo.png")),
+                Container(
+                    width: 190,
+                    height: 25,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                    child: FlatButton(
+                        color: Color(0x55000000),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        shape: RoundedRectangleBorder(
+//                    side: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0)),
+                        onPressed: () {
+                          print("Terms & Conditions");
+                          _launchInBrowser("http://www.google.gr");
+                        },
+
+                        child: Text(
+                          "Terms & Conditions",
+                          style: TextStyle(color: Color(0xffffffff), fontSize: 15.0),
+                          textAlign: TextAlign.center,
+                        ))),
+                Container(
+                    width: 150,
+                    height: 25,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                    child: FlatButton(
+                        color: Color(0x55000000),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        shape: RoundedRectangleBorder(
+//                    side: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0)),
+                        onPressed: () {
+                          print("Privacy Policy");
+                          _launchInBrowser("http://www.google.gr");
+                        },
+                        child: Text(
+                          "Privacy Policy",
+                          style: TextStyle(color: Color(0xffffffff), fontSize: 15),
+                          textAlign: TextAlign.center,
+                        )))
+              ],
+            )));
+  }
+
+  getGamePromos(var gamePromos) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    for (int i=0; i<gamePromos.length; i++){
+     widget._gamePromos.add( new Image.network(gamePromos[i]));
+    }
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -291,4 +301,41 @@ class _GamePromosState extends State<GamePromos> {
       ],
     );
   }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body:
+        FutureBuilder<GameInfo>(
+          future: _gameInfo,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              print("->"+snapshot.data.gameName);
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  getResizedBackground(snapshot.data.gameBg),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      getGamePromos(snapshot.data.gamePromos),
+                      getIframeContainer(snapshot.data.gameUrl, snapshot.data.gameOrientation),
+                      getBottomLinksContainer()],
+                  )
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner.
+            return CircularProgressIndicator();
+          },
+        )
+
+    );
+  }
+
+
 }

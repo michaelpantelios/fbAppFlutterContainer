@@ -1,0 +1,18 @@
+{
+  "gameOrientation": "portrait",
+  "gameName": "Pacman",
+  "gameUrl": "http://localhost:33243/static/test.html",
+  "gameBg": "http://localhost:33243/static/bg.png",
+  "gamePromos": [
+    "http://localhost:33243/static/gamePromo1.png",
+    "http://localhost:33243/static/gamePromo2.png",
+    "http://localhost:33243/static/gamePromo3.png",
+    "http://localhost:33243/static/gamePromo4.png",
+    "http://localhost:33243/static/gamePromo5.png",
+    "http://localhost:33243/static/gamePromo1.png",
+    "http://localhost:33243/static/gamePromo2.png",
+    "http://localhost:33243/static/gamePromo3.png",
+    "http://localhost:33243/static/gamePromo4.png",
+    "http://localhost:33243/static/gamePromo5.png"
+  ]
+}
