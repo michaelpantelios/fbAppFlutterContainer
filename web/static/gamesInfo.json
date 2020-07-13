@@ -1,0 +1,78 @@
+{
+  "games": [
+    {
+      "gameid" : "yatzy",
+      "bgImage" : "bg_yatzy.png",
+      "promoIcon" : "gamePromo1.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "mahjong",
+      "bgImage" : "bg_mahjong.png",
+      "promoIcon" : "gamePromo2.png",
+      "orientation" : "landscape",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "kseri",
+      "bgImage" : "bg_kseri.png",
+      "promoIcon" : "gamePromo3.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "klondike",
+      "bgImage" : "bg_agonia.png",
+      "promoIcon" : "gamePromo4.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "crossword",
+      "bgImage" : "bg_wordfight.png",
+      "promoIcon" : "gamePromo5.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "yatzy2",
+      "bgImage" : "bg_yatzy.png",
+      "promoIcon" : "gamePromo1.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "mahjong2",
+      "bgImage" : "bg_mahjong.png",
+      "promoIcon" : "gamePromo2.png",
+      "orientation" : "landscape",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "kseri2",
+      "bgImage" : "bg_kseri.png",
+      "promoIcon" : "gamePromo3.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "klondike2",
+      "bgImage" : "bg_agonia.png",
+      "promoIcon" : "gamePromo4.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    },
+    {
+      "gameid" : "crossword2",
+      "bgImage" : "bg_wordfight.png",
+      "promoIcon" : "gamePromo5.png",
+      "orientation" : "portrait",
+      "publisherLogo" : "ll_logo.png"
+    }
+  ],
+  "activeGameId": "yatzy",
+  "legalTermsUrl" : "http://lazyland.net/legal/termsofservice.htm?locale=en_US",
+  "privacyTermsUrl" : "http://lazyland.net/legal/privacypolicy.html?locale=en_US",
+  "param1" : ""
+}
