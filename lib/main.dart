@@ -54,7 +54,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    print("initState");
     _controller = ScrollController();
 
     // ignore: undefined_prefixed_name
@@ -74,15 +73,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<bool> fetchGamesInfo() async {
-    print("fetchGamesInfo : "+localhostUrl + "static/gamesInfo.json");
     final response = await http.get(localhostUrl + "static/gamesInfo.json");
 
     if (response.statusCode == 200) {
-      print("statusCode ="+response.statusCode.toString());
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       GamesInfo gamesInfo =  GamesInfo.fromJson(json.decode(response.body));
-      print("gamesInfo.activeGameId = "+gamesInfo.activeGameId);
       _gamesList = gamesInfo.games;
 
       String activeGameId = gamesInfo.activeGameId;
@@ -91,16 +85,11 @@ class _HomePageState extends State<HomePage> {
       if (res.length > 0)
        _activeGame = res[0];
 
-      print("activeGameId = "+_activeGame.bgImage);
-
       _legalTermsUrl = gamesInfo.legalTermsUrl;
       _privacyTermsUrl = gamesInfo.privacyTermsUrl;
 
       return true;
     } else {
-      print("statusCode ="+response.statusCode.toString());
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load gameInfo');
     }
     return false;
@@ -122,11 +111,9 @@ class _HomePageState extends State<HomePage> {
 
 
   Widget getResizedBackground() {
-    print("getResizedBackground");
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
     double screenRatio = screenWidth / screenHeight;
-    //    print("screenRatio ="+screenRatio.toString());
 
     double bgRatio = 1.83333333333;
 
@@ -143,8 +130,6 @@ class _HomePageState extends State<HomePage> {
       bgHeight = screenHeight;
       bgWidth = bgHeight * bgRatio;
     }
-
-    print("bg: "+_activeGame.bgImage);
 
     return Container(
         width: bgWidth,
@@ -176,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                 child:  Image.network(localhostUrl+"static/"+_gamesList[index].promoIcon),
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  _launchInBrowser(localhostUrl);
+                  _launchInBrowser(localhostUrl+"?param1="+_gamesList[index].gameid);
                 },
               )
           ),
@@ -206,7 +191,6 @@ class _HomePageState extends State<HomePage> {
               iconSize: 65,
               color: Colors.white,
               onPressed: () {
-                print("go left");
                 _gamePromosScrollRight();
               },
             ),
@@ -225,7 +209,6 @@ class _HomePageState extends State<HomePage> {
               iconSize: 65,
               color: Colors.white,
               onPressed: () {
-                print("go right");
                 _gamePromosScrollLeft();
               },
             ),
@@ -316,7 +299,6 @@ class _HomePageState extends State<HomePage> {
 //                    side: BorderSide(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10.0)),
                         onPressed: () {
-                          print("Terms & Conditions");
                           _launchInBrowser(_legalTermsUrl);
                         },
 
@@ -337,7 +319,6 @@ class _HomePageState extends State<HomePage> {
 //                    side: BorderSide(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10.0)),
                         onPressed: () {
-                          print("Privacy Policy");
                           _launchInBrowser(_privacyTermsUrl);
                         },
                         child: Text(
