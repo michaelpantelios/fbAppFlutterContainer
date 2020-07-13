@@ -31,8 +31,6 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
-  final List<Widget> _gamePromos = [];
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -68,7 +66,6 @@ class _HomePageState extends State<HomePage> {
     _iframeWidget = HtmlElementView(key: UniqueKey(), viewType: 'iframeElement');
 
   fetchGamesInfo().then((res)=> {
-
       setState(() {
         if (res)
           _contentReady = true;
@@ -179,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                 child:  Image.network(localhostUrl+"static/"+_gamesList[index].promoIcon),
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  _launchInBrowser(localhostUrl+"static/"+_gamesList[index].gameid+".html");
+                  _launchInBrowser(localhostUrl);
                 },
               )
           ),
