@@ -72,6 +72,7 @@
     }
   ],
   "activeGameId": "yatzy",
+  "fbLikeCode" : "<iframe src='https://www.facebook.com/plugins/like.php?href=https://developers.facebook.com/docs/plugins/&width=250&layout=standard&action=like&size=small&share=false&height=35&appId=838745102817861' width='250' height='40' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'></iframe>",
   "legalTermsUrl" : "http://lazyland.net/legal/termsofservice.htm?locale=en_US",
   "privacyTermsUrl" : "http://lazyland.net/legal/privacypolicy.html?locale=en_US",
   "param1" : ""

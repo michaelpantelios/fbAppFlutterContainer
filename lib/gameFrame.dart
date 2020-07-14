@@ -14,18 +14,18 @@ class GameFrame extends StatefulWidget {
 }
 
 class _GameFrameState extends State<GameFrame> {
-  final html.IFrameElement _iframeElement = html.IFrameElement();
-  Widget _iframeWidget;
+  final html.IFrameElement _gameFrameElement = html.IFrameElement();
+  Widget _gameFrameWidget;
 
   @override
   void initState() {
     super.initState();
 
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory( 'gameIframeElement', (int viewId) => _iframeElement);
-    _iframeWidget = HtmlElementView(key: UniqueKey(), viewType: 'gameIframeElement');
+    ui.platformViewRegistry.registerViewFactory( 'gameIframeElement', (int viewId) => _gameFrameElement);
+    _gameFrameWidget = HtmlElementView(key: UniqueKey(), viewType: 'gameIframeElement');
 
-    _iframeElement.src = widget.frameSrc;
+    _gameFrameElement.src = widget.frameSrc;
   }
 
   @override
@@ -43,10 +43,10 @@ class _GameFrameState extends State<GameFrame> {
       double iframeWidth;
 
       if (widget.orientation == "portrait") {
-        iframeHeight = screenHeight - 150;
+        iframeHeight = screenHeight - 180;
         iframeWidth = iframeHeight * portraitGameRatio;
       } else {
-        iframeHeight = screenHeight - 150;
+        iframeHeight = screenHeight - 180;
         iframeWidth = iframeHeight * landscapeGameRatio;
       }
 
@@ -64,7 +64,7 @@ class _GameFrameState extends State<GameFrame> {
           ),
           height: calculateIframeSize().height,
           width: calculateIframeSize().width,
-          child: _iframeWidget
+          child: _gameFrameWidget
       ),
     );
   }
