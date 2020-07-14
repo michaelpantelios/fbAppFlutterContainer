@@ -36,35 +36,35 @@
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "yatzy2",
+      "gameid" : "yatzy",
       "bgImage" : "bg_yatzy.png",
       "promoIcon" : "gamePromo1.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "mahjong2",
+      "gameid" : "mahjong",
       "bgImage" : "bg_mahjong.png",
       "promoIcon" : "gamePromo2.png",
       "orientation" : "landscape",
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "kseri2",
+      "gameid" : "kseri",
       "bgImage" : "bg_kseri.png",
       "promoIcon" : "gamePromo3.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "klondike2",
+      "gameid" : "klondike",
       "bgImage" : "bg_agonia.png",
       "promoIcon" : "gamePromo4.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "crossword2",
+      "gameid" : "crossword",
       "bgImage" : "bg_wordfight.png",
       "promoIcon" : "gamePromo5.png",
       "orientation" : "portrait",

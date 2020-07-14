@@ -1,13 +1,17 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:convert';
-import 'dart:html';
-import 'package:flutter/cupertino.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
+import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fbAppFlutterContainer/gameInfo.dart';
 import 'package:fbAppFlutterContainer/gamesInfo.dart';
+import 'package:fbAppFlutterContainer/gameFrame.dart';
+import 'package:fbAppFlutterContainer/gamePromos.dart';
+import 'package:fbAppFlutterContainer/utils.dart';
 
 main() {
   runApp(MyApp());
@@ -39,14 +43,16 @@ class _HomePageState extends State<HomePage> {
   bool _contentReady = false;
   final gamePromoWidth = 160.0;
   final gamePromoHeight = 65.0;
-  final String localhostUrl = "http://localhost:63124/";
+  final String localhostUrl = "http://localhost:49948/";
 
   ScrollController _controller;
-  final IFrameElement _iframeElement = IFrameElement();
-  Widget _iframeWidget;
+
+  String _initialActiveGameId;
 
   GameInfo _activeGame;
   List<GameInfo> _gamesList;
+  String _activeGameId;
+  String _iframeSrc;
 
   String _legalTermsUrl;
   String _privacyTermsUrl;
@@ -54,23 +60,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    final Map<String, String> params = Uri.parse(html.window.location.href).queryParameters;
+    print(params["param1"]);
+    _initialActiveGameId = params["param1"] == null ? "" : params["param1"];
+
     _controller = ScrollController();
 
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(
-      'iframeElement',
-          (int viewId) => _iframeElement,
-    );
-
-    _iframeWidget = HtmlElementView(key: UniqueKey(), viewType: 'iframeElement');
-
-  fetchGamesInfo().then((res)=> {
-      setState(() {
-        if (res)
-          _contentReady = true;
-      })
-    });
-  }
+    fetchGamesInfo().then((res)=> {
+        setState(() {
+          if (res)
+            _contentReady = true;
+        })
+      });
+    }
 
   Future<bool> fetchGamesInfo() async {
     final response = await http.get(localhostUrl + "static/gamesInfo.json");
@@ -79,9 +82,11 @@ class _HomePageState extends State<HomePage> {
       GamesInfo gamesInfo =  GamesInfo.fromJson(json.decode(response.body));
       _gamesList = gamesInfo.games;
 
-      String activeGameId = gamesInfo.activeGameId;
+      _activeGameId = _initialActiveGameId == "" ? gamesInfo.activeGameId : _initialActiveGameId;
 
-      List<GameInfo> res = _gamesList.where((element) => element.gameid == activeGameId).toList();
+      _iframeSrc = localhostUrl + "static/"+_activeGameId+".html";
+
+      List<GameInfo> res = _gamesList.where((element) => element.gameid == _activeGameId).toList();
       if (res.length > 0)
        _activeGame = res[0];
 
@@ -94,21 +99,6 @@ class _HomePageState extends State<HomePage> {
     }
     return false;
   }
-
-
-  Future<void> _launchInBrowser(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
 
   Widget getResizedBackground() {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -139,131 +129,6 @@ class _HomePageState extends State<HomePage> {
           fit: BoxFit.cover,
           child: Image.network(localhostUrl +"static/"+ _activeGame.bgImage),
         ));
-  }
-
-
-  Widget GamePromoItem(BuildContext context, int index) {
-    return Container(
-        padding: EdgeInsets.all(10),
-        child: Center(
-          child: Container(
-              width: gamePromoWidth,
-              height: gamePromoHeight,
-              decoration: new BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                boxShadow: [
-                  new BoxShadow(color: Color(0x55000000), offset: new Offset(0.0, 0.0), blurRadius: 5, spreadRadius: 2),
-                ],
-              ),
-              child:
-              FlatButton(
-                child:  Image.network(localhostUrl+"static/"+_gamesList[index].promoIcon),
-                padding: EdgeInsets.all(0),
-                onPressed: () {
-                  _launchInBrowser(localhostUrl+"?param1="+_gamesList[index].gameid);
-                },
-              )
-          ),
-        ));
-  }
-
-  getGamePromos() {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            width: screenWidth,
-            height: 80,
-            child: FittedBox(
-              alignment: Alignment.center,
-              fit: BoxFit.fill,
-              child: Image.asset("images/gamePromosBg.png"),
-            )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.keyboard_arrow_left),
-              iconSize: 65,
-              color: Colors.white,
-              onPressed: () {
-                _gamePromosScrollRight();
-              },
-            ),
-            ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: gamePromoWidth, maxWidth: screenWidth * 0.5, minHeight: 20, maxHeight: gamePromoHeight + 10),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: _controller,
-                    itemCount: _gamesList.length,
-                    scrollDirection: Axis.horizontal,
-                    itemExtent: gamePromoWidth,
-                    itemBuilder: GamePromoItem)),
-            IconButton(
-              icon: Icon(Icons.keyboard_arrow_right),
-              iconSize: 65,
-              color: Colors.white,
-              onPressed: () {
-                _gamePromosScrollLeft();
-              },
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  _gamePromosScrollRight() {
-    _controller.animateTo(_controller.offset - gamePromoWidth, curve: Curves.linear, duration: Duration(milliseconds: 250));
-  }
-
-  _gamePromosScrollLeft() {
-    _controller.animateTo(_controller.offset + gamePromoWidth, curve: Curves.linear, duration: Duration(milliseconds: 250));
-  }
-
-  Size calculateIframeSize() {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
-    //considering game is 1920x1080
-    double portraitGameRatio = 1080 / 1920;
-    double landscapeGameRatio = 1.777;
-
-    double iframeHeight;
-    double iframeWidth;
-
-    if (_activeGame.orientation == "portrait") {
-      iframeHeight = screenHeight - 150;
-      iframeWidth = iframeHeight * portraitGameRatio;
-    } else {
-      iframeHeight = screenHeight - 150;
-      iframeWidth = iframeHeight * landscapeGameRatio;
-    }
-
-    return new Size(iframeWidth, iframeHeight);
-  }
-
-  getIframeContainer() {
-    _iframeElement.src = localhostUrl+"static/"+_activeGame.gameid+".html";
-    return Center(
-      child: Container(
-          decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.white,
-            boxShadow: [
-              new BoxShadow(color: Color(0xaa000000), offset: new Offset(0.0, 0.0), blurRadius: 5, spreadRadius: 2),
-            ],
-          ),
-          height: calculateIframeSize().height,
-          width: calculateIframeSize().width,
-          child: _iframeWidget
-      ),
-    );
   }
 
   Widget getBottomLinksContainer() {
@@ -299,9 +164,8 @@ class _HomePageState extends State<HomePage> {
 //                    side: BorderSide(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10.0)),
                         onPressed: () {
-                          _launchInBrowser(_legalTermsUrl);
+                          Utils.launchInBrowser(_legalTermsUrl);
                         },
-
                         child: Text(
                           "Terms & Conditions",
                           style: TextStyle(color: Color(0xffffffff), fontSize: 15.0),
@@ -319,7 +183,7 @@ class _HomePageState extends State<HomePage> {
 //                    side: BorderSide(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10.0)),
                         onPressed: () {
-                          _launchInBrowser(_privacyTermsUrl);
+                          Utils.launchInBrowser(_privacyTermsUrl);
                         },
                         child: Text(
                           "Privacy Policy",
@@ -348,8 +212,8 @@ class _HomePageState extends State<HomePage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                getGamePromos(),
-                getIframeContainer(),
+                GamePromos(localhostUrl: localhostUrl, gamesList: _gamesList),
+                GameFrame(frameSrc: _iframeSrc, orientation: _activeGame.orientation ),
                 getBottomLinksContainer()],
             )
           ],
