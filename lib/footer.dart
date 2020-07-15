@@ -5,9 +5,9 @@ import 'package:fbAppFlutterContainer/utils.dart';
 import 'dart:html' as html;
 
 class Footer extends StatefulWidget {
-  Footer({Key key, this.publisherLogoUrl, this.legalTermsUrl, this.privacyTermsUrl}) : super(key : key);
+  Footer({Key key, this.publisherLogoUrl, this.legalTermsUrl, this.privacyTermsUrl, this.fbLikeCode}) : super(key : key);
 
-//  final String fbLikeCode;
+  final String fbLikeCode;
   final String publisherLogoUrl;
   final String legalTermsUrl;
   final String privacyTermsUrl;
@@ -29,8 +29,9 @@ class _FooterState extends State<Footer> {
     _socialFrameWidget = HtmlElementView(key: UniqueKey(), viewType: 'socialIframeElement');
     
 //    String src = widget.fbLikeCode;
-    String src = "<iframe src='https://www.facebook.com/plugins/like.php?href=https://developers.facebook.com/docs/plugins/&width=250&layout=standard&action=like&size=small&share=false&height=35&appId=838745102817861' width='250' height='40' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'></iframe>";
+    String src = '<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=250&layout=button&action=like&size=large&share=false&height=65&appId=838745102817861" width="250" height="65" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>';
 
+//    _socialFrameElement.src = "data:text/html;charset=utf-8," + src;
     _socialFrameElement.src = "data:text/html;charset=utf-8," +
         Uri.encodeComponent(src);
 

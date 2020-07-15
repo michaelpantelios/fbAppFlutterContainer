@@ -13,8 +13,8 @@ class GamePromos extends StatefulWidget {
 }
 
 class GamePromosState extends State<GamePromos> {
-  final gamePromoWidth = 160.0;
-  final gamePromoHeight = 65.0;
+  final gamePromoWidth = 154.0;
+  final gamePromoHeight = 64.0;
   ScrollController _controller;
 
   @override
@@ -50,7 +50,7 @@ class GamePromosState extends State<GamePromos> {
               ),
               child:
               FlatButton(
-                child:  Image.network(widget.localhostUrl+"static/"+widget.gamesList[index].promoIcon),
+                child:  Image.network(widget.localhostUrl+"static/"+widget.gamesList[index].icon),
                 padding: EdgeInsets.all(0),
                 onPressed: () {
                   Utils.launchInBrowser(widget.localhostUrl+"?param1="+widget.gamesList[index].gameid);

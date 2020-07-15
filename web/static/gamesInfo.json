@@ -3,76 +3,76 @@
     {
       "gameid" : "yatzy",
       "bgImage" : "bg_yatzy.png",
-      "promoIcon" : "gamePromo1.png",
+      "icon" : "gamePromo1.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "mahjong",
       "bgImage" : "bg_mahjong.png",
-      "promoIcon" : "gamePromo2.png",
+      "icon" : "gamePromo2.png",
       "orientation" : "landscape",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "kseri",
       "bgImage" : "bg_kseri.png",
-      "promoIcon" : "gamePromo3.png",
+      "icon" : "gamePromo3.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "klondike",
       "bgImage" : "bg_agonia.png",
-      "promoIcon" : "gamePromo4.png",
+      "icon" : "gamePromo4.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
-      "gameid" : "crossword",
+      "gameid" : "wordfight",
       "bgImage" : "bg_wordfight.png",
-      "promoIcon" : "gamePromo5.png",
+      "icon" : "gamePromo5.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "yatzy",
       "bgImage" : "bg_yatzy.png",
-      "promoIcon" : "gamePromo1.png",
+      "icon" : "gamePromo1.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "mahjong",
       "bgImage" : "bg_mahjong.png",
-      "promoIcon" : "gamePromo2.png",
+      "icon" : "gamePromo2.png",
       "orientation" : "landscape",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "kseri",
       "bgImage" : "bg_kseri.png",
-      "promoIcon" : "gamePromo3.png",
+      "icon" : "gamePromo3.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "klondike",
       "bgImage" : "bg_agonia.png",
-      "promoIcon" : "gamePromo4.png",
+      "icon" : "gamePromo4.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     },
     {
       "gameid" : "crossword",
       "bgImage" : "bg_wordfight.png",
-      "promoIcon" : "gamePromo5.png",
+      "icon" : "gamePromo5.png",
       "orientation" : "portrait",
       "publisherLogo" : "ll_logo.png"
     }
   ],
   "activeGameId": "yatzy",
-  "fbLikeCode" : "<iframe src='https://www.facebook.com/plugins/like.php?href=https://developers.facebook.com/docs/plugins/&width=250&layout=standard&action=like&size=small&share=false&height=35&appId=838745102817861' width='250' height='40' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'></iframe>",
+  "fbLikeCode" : "https://www.facebook.com/plugins/like.php?href=https://developers.facebook.com/docs/plugins/&width=250&layout=standard&action=like&size=small&share=false&height=35&appId=838745102817861' width='250' height='40' style='border:none;overflow:hidden' scrolling='no' frameborder='0' allowTransparency='true' allow='encrypted-media'",
   "legalTermsUrl" : "http://lazyland.net/legal/termsofservice.htm?locale=en_US",
   "privacyTermsUrl" : "http://lazyland.net/legal/privacypolicy.html?locale=en_US",
   "param1" : ""

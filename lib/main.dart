@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   bool _contentReady = false;
   final gamePromoWidth = 160.0;
   final gamePromoHeight = 65.0;
-  final String localhostUrl = "http://localhost:45763/";
+  final String localhostUrl = "http://localhost:55614/";
 
   ScrollController _controller;
 
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
       _gameFrameSrc = localhostUrl + "static/"+_activeGameId+".html";
 
-//      _fbLikeCode = gamesInfo.fbLikeCode;
+      _fbLikeCode = gamesInfo.fbLikeCode;
       _legalTermsUrl = gamesInfo.legalTermsUrl;
       _privacyTermsUrl = gamesInfo.privacyTermsUrl;
 
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GamePromos(localhostUrl: localhostUrl, gamesList: _gamesList),
                   GameFrame(frameSrc: _gameFrameSrc, orientation: _activeGame.orientation ),
-                  Footer(publisherLogoUrl: _publisherLogoUrl, legalTermsUrl: _legalTermsUrl, privacyTermsUrl: _privacyTermsUrl)],
+                  Footer(publisherLogoUrl: _publisherLogoUrl, legalTermsUrl: _legalTermsUrl, privacyTermsUrl: _privacyTermsUrl, fbLikeCode: _fbLikeCode,)],
               )
             ],
           )
