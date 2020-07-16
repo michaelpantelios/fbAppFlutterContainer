@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fbAppFlutterContainer/utils.dart';
 import  'package:fbAppFlutterContainer/gameInfo.dart';
+import 'package:fbAppFlutterContainer/main.dart';
 
 class GamePromos extends StatefulWidget {
-  GamePromos({Key key, this.gamesList, this.localhostUrl}) : super(key:key);
-
   List<GameInfo> gamesList;
-  String localhostUrl;
+
+  GamePromos({Key key, this.gamesList}) : super(key:key);
+
+  static final String fbLinkPrefix = "https://apps.facebook.com/";
 
   @override
   GamePromosState createState() => GamePromosState();
@@ -16,12 +18,14 @@ class GamePromosState extends State<GamePromos> {
   final gamePromoWidth = 154.0;
   final gamePromoHeight = 64.0;
   ScrollController _controller;
+  List<GameInfo> _gamesList;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _gamesList = widget.gamesList;
+    print("GamePromos: "+_gamesList.length.toString());
     _controller = ScrollController();
   }
 
@@ -50,10 +54,10 @@ class GamePromosState extends State<GamePromos> {
               ),
               child:
               FlatButton(
-                child:  Image.network(widget.localhostUrl+"static/"+widget.gamesList[index].icon),
+                child:  Image.network(FbAppContainer.getAssetUrl(_gamesList[index].icon)),
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  Utils.launchInBrowser(widget.localhostUrl+"?param1="+widget.gamesList[index].gameid);
+                  Utils.launchInBrowser(GamePromos.fbLinkPrefix+_gamesList[index].fbNamespace);
                 },
               )
           ),
@@ -93,7 +97,7 @@ class GamePromosState extends State<GamePromos> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     controller: _controller,
-                    itemCount: widget.gamesList.length,
+                    itemCount: _gamesList.length,
                     scrollDirection: Axis.horizontal,
                     itemExtent: gamePromoWidth,
                     itemBuilder: GamePromoItem)),

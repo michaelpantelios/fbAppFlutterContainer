@@ -5,12 +5,9 @@ part 'gamesInfo.g.dart';
 @JsonSerializable(explicitToJson: true)
 class GamesInfo {
   List<GameInfo> games;
-  String activeGameId;
-  String fbLikeCode;
-  String legalTermsUrl;
-  String privacyTermsUrl;
+  String likeUrl;
 
-  GamesInfo({this.games, this.activeGameId, this.fbLikeCode, this.legalTermsUrl, this.privacyTermsUrl});
+  GamesInfo({this.games, this.likeUrl});
 
   factory GamesInfo.fromJson(Map<String, dynamic> json) => _$GamesInfoFromJson(json);
 }

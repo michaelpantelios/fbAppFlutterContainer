@@ -2,12 +2,12 @@ import 'dart:ui' as ui;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:fbAppFlutterContainer/gameInfo.dart';
 
 class GameFrame extends StatefulWidget {
-  GameFrame({Key key, this.frameSrc, this.orientation}) : super(key : key);
+  GameFrame({Key key, this.gameInfo}) : super(key : key);
 
-  final String frameSrc;
-  final String orientation;
+  final GameInfo gameInfo;
 
   @override
   _GameFrameState createState() => _GameFrameState();
@@ -25,7 +25,10 @@ class _GameFrameState extends State<GameFrame> {
     ui.platformViewRegistry.registerViewFactory( 'gameIframeElement', (int viewId) => _gameFrameElement);
     _gameFrameWidget = HtmlElementView(key: UniqueKey(), viewType: 'gameIframeElement');
 
-    _gameFrameElement.src = widget.frameSrc;
+
+    _gameFrameElement.src = widget.gameInfo.gameUrl;
+    _gameFrameElement.style.border = "none";
+    _gameFrameElement.style.padding = "0";
   }
 
   @override
@@ -42,7 +45,7 @@ class _GameFrameState extends State<GameFrame> {
       double iframeHeight;
       double iframeWidth;
 
-      if (widget.orientation == "portrait") {
+      if (widget.gameInfo.orientation == "portrait") {
         iframeHeight = screenHeight - 180;
         iframeWidth = iframeHeight * portraitGameRatio;
       } else {

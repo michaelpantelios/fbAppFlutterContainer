@@ -12,15 +12,11 @@ GamesInfo _$GamesInfoFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : GameInfo.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    activeGameId: json['activeGameId'] as String,
-    legalTermsUrl: json['legalTermsUrl'] as String,
-    privacyTermsUrl: json['privacyTermsUrl'] as String,
+    likeUrl: json['likeUrl'] as String,
   );
 }
 
 Map<String, dynamic> _$GamesInfoToJson(GamesInfo instance) => <String, dynamic>{
       'games': instance.games?.map((e) => e?.toJson())?.toList(),
-      'activeGameId': instance.activeGameId,
-      'legalTermsUrl': instance.legalTermsUrl,
-      'privacyTermsUrl': instance.privacyTermsUrl,
+      'likeUrl': instance.likeUrl,
     };
