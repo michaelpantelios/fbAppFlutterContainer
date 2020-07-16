@@ -97,7 +97,7 @@ class _FooterState extends State<Footer> {
                     child: Container(
                         margin: EdgeInsets.only(
                             top: 0, bottom: 0, left: 10, right: 10),
-                        width: 250,
+                        width: 100,
                         height: 25,
                         child: _socialFrameWidget))
               ],

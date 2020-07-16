@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
 
     final Map<String, String> params = Uri.parse(html.window.location.href).queryParameters;
     _gameId = params["gameid"];
-    if (_gameId == "") _gameId = "wordfight";
+    if (_gameId == "" || _gameId == null) _gameId = "wordfight";
 
     fetchGamesInfo().then((res) => {
           setState(() {
@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
           _activeGame = res[0];
 
           _fbLikeCode = gamesInfo.likeUrl;
+
           return true;
         }
       }
@@ -132,14 +133,14 @@ class _HomePageState extends State<HomePage> {
       return Container();
     else {
 //      js.context.callMethod('alertMessage', ['Flutter is calling upon JavaScript!']);
-
+      print("must bring scaffold");
       return Scaffold(
           body: Stack(
         fit: StackFit.expand,
         children: [
           getResizedBackground(),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GamePromos(gamesList: _gamesList),
               GameFrame(gameInfo: _activeGame),

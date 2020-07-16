@@ -51,6 +51,10 @@ class _GameFrameState extends State<GameFrame> {
       } else {
         iframeHeight = screenHeight - 180;
         iframeWidth = iframeHeight * landscapeGameRatio;
+        if (iframeWidth > screenWidth){
+          iframeWidth = screenWidth - 20;
+          iframeHeight = iframeWidth / landscapeGameRatio;
+        }
       }
 
       return new Size(iframeWidth, iframeHeight);
